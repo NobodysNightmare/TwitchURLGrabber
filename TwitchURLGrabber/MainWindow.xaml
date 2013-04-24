@@ -1,0 +1,17 @@
+﻿<Window x:Class="TwitchURLGrabber.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="412.687" Width="750.373" Loaded="Window_Loaded">
+    <Grid>
+        <ListView x:Name="URLListView" Margin="10">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="URL" DisplayMemberBinding="{Binding Path=URL}" />
+                    <GridViewColumn Header="Count" DisplayMemberBinding="{Binding Path=TotalCount}" />
+                    <GridViewColumn Header="Unique" DisplayMemberBinding="{Binding Path=UniqueCount}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
