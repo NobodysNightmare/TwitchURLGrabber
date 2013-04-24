@@ -6,12 +6,23 @@
         <ListView x:Name="URLListView" Margin="10">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="URL" DisplayMemberBinding="{Binding Path=URL}" />
+                    <GridViewColumn Header="URL">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <TextBlock>
+                                        <Hyperlink NavigateUri="{Binding Path=URL}" Click="Hyperlink_Click">
+                                            <TextBlock Text="{Binding Path=URL}" />
+                                        </Hyperlink>    
+                                    </TextBlock>
+                                </DockPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Count" DisplayMemberBinding="{Binding Path=TotalCount}" />
                     <GridViewColumn Header="Unique" DisplayMemberBinding="{Binding Path=UniqueCount}" />
                 </GridView>
             </ListView.View>
         </ListView>
-
     </Grid>
 </Window>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -68,6 +69,20 @@ namespace TwitchURLGrabber
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             IRCClient.Connect();
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            var link = sender as Hyperlink;
+            OpenBrowser(link);
+        }
+
+        private static void OpenBrowser(Hyperlink link)
+        {
+            Process proc = new Process();
+            proc.StartInfo.UseShellExecute = true;
+            proc.StartInfo.FileName = link.NavigateUri.ToString();
+            proc.Start();
         }
     }
 }
