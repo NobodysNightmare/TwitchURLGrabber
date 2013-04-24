@@ -71,9 +71,10 @@ namespace TwitchURLGrabber
                     }
                     else
                     {
-                        if (parts.First() == "PONG")
+                        if (parts.First() == "PING")
                         {
-                            writer.WriteLine("PING {0}", parts.Last());
+                            writer.WriteLine("PONG {0}", parts.Last());
+                            writer.Flush();
                         }
                     }
                 }
