@@ -22,6 +22,8 @@ namespace TwitchURLGrabber
     public partial class MainWindow : Window
     {
         private LightTIRCClient IRCClient;
+        private int DisconnectCount;
+        private int MessageCount;
 
         private ObservableCollection<URLListItem> Urls;
 
@@ -35,6 +37,8 @@ namespace TwitchURLGrabber
 
             IRCClient = new LightTIRCClient(Settings.Default.Channel, Settings.Default.User, Settings.Default.Token);
             IRCClient.Message += IRCClient_Message;
+            IRCClient.Connected += IRCClient_Connected;
+            IRCClient.Disconnected += IRCClient_Disconnected;
         }
 
         void IRCClient_Message(object source, MessageEventArgs args)
@@ -42,17 +46,43 @@ namespace TwitchURLGrabber
             foreach (string url in ParseUrlsFromMessage(args.Message).Distinct())
             {
                 URLListView.Dispatcher.Invoke(new Action(() =>
+                {
+                    if (Urls.Any(u => u.URL == url))
                     {
-                        if (Urls.Any(u => u.URL == url))
-                        {
-                            Urls.Single(u => u.URL == url).TotalCount++;
-                        }
-                        else
-                        {
-                            Urls.Add(new URLListItem(url));
-                        }
-                    }));
+                        Urls.Single(u => u.URL == url).TotalCount++;
+                    }
+                    else
+                    {
+                        Urls.Add(new URLListItem(url));
+                    }
+                }));
             }
+
+            MessageCountText.Dispatcher.Invoke(new Action(() =>
+            {
+                MessageCountText.Text = string.Format("Messages: {0:n0}", ++MessageCount);
+            }));
+        }
+
+        void IRCClient_Connected(object sender, EventArgs e)
+        {
+            StatusText.Dispatcher.Invoke(new Action(() =>
+            {
+                StatusText.Text = "Connected";
+            }));
+        }
+
+        void IRCClient_Disconnected(object sender, EventArgs e)
+        {
+            StatusText.Dispatcher.Invoke(new Action(() =>
+            {
+                StatusText.Text = string.Format("Disconnected. Trying to reconnect...");
+            }));
+
+            DisconnectCountText.Dispatcher.Invoke(new Action(() =>
+            {
+                DisconnectCountText.Text = string.Format("Disconnects: {0:n0}", ++DisconnectCount);
+            }));
         }
 
         private IEnumerable<string> ParseUrlsFromMessage(string message)
@@ -83,6 +113,11 @@ namespace TwitchURLGrabber
             proc.StartInfo.UseShellExecute = true;
             proc.StartInfo.FileName = link.NavigateUri.ToString();
             proc.Start();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            IRCClient.Dispose();
         }
     }
 }
