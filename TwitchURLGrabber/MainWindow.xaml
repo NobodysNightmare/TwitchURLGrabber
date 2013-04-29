@@ -6,6 +6,7 @@
         <ListView x:Name="URLListView" Margin="10,10,10,31">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="First seen" DisplayMemberBinding="{Binding Path=FirstOccurence, StringFormat='HH:mm:ss'}" />
                     <GridViewColumn Header="URL">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>

@@ -53,7 +53,7 @@ namespace TwitchURLGrabber
                     }
                     else
                     {
-                        Urls.Add(new URLListItem(url));
+                        Urls.Add(new URLListItem(DateTime.Now, url));
                     }
                 }));
             }
