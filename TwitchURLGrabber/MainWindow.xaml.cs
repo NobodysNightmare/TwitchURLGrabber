@@ -35,7 +35,7 @@ namespace TwitchURLGrabber
 
             URLListView.ItemsSource = Urls;
 
-            IRCClient = new LightTIRCClient(Settings.Default.Channel, Settings.Default.User, Settings.Default.Token);
+            IRCClient = new LightTIRCClient(Settings.Default.Channel, Settings.Default.User, Settings.Default.Password);
             IRCClient.Message += IRCClient_Message;
             IRCClient.Connected += IRCClient_Connected;
             IRCClient.Disconnected += IRCClient_Disconnected;

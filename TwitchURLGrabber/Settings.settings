@@ -8,7 +8,7 @@
     <Setting Name="User" Type="System.String" Scope="User">
       <Value Profile="(Default)">NobodysNightmare</Value>
     </Setting>
-    <Setting Name="Token" Type="System.String" Scope="User">
+    <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)">peterpan</Value>
     </Setting>
   </Settings>

@@ -50,12 +50,12 @@ namespace TwitchURLGrabber {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("peterpan")]
-        public string Token {
+        public string Password {
             get {
-                return ((string)(this["Token"]));
+                return ((string)(this["Password"]));
             }
             set {
-                this["Token"] = value;
+                this["Password"] = value;
             }
         }
     }
