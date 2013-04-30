@@ -73,7 +73,7 @@ namespace TwitchURLGrabber
                                         writer.Flush();
                                         break;
                                     case "PRIVMSG":
-                                        OnMessage(parts[0], string.Join(" ", parts.Skip(3).ToArray()).Substring(1));
+                                        OnMessage(BuildUsername(parts), BuildMessage(parts));
                                         break;
                                 }
                             }
@@ -98,6 +98,22 @@ namespace TwitchURLGrabber
                     return;
                 }
             }
+        }
+
+        private static string BuildUsername(string[] parts)
+        {
+            var endIndex = parts[0].IndexOf('!');
+            if (endIndex < 0)
+            {
+                return parts[0];
+            }
+
+            return parts[0].Substring(1, endIndex - 1);
+        }
+
+        private static string BuildMessage(string[] parts)
+        {
+            return string.Join(" ", parts.Skip(3).ToArray()).Substring(1);
         }
 
         protected void OnMessage(string user, string message)
