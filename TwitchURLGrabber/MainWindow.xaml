@@ -21,7 +21,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="Count" DisplayMemberBinding="{Binding Path=TotalCount}" />
-                    <GridViewColumn Header="Unique" DisplayMemberBinding="{Binding Path=UniqueCount}" />
+                    <GridViewColumn Header="Unique" DisplayMemberBinding="{Binding Path=SentBy.Count}" />
                 </GridView>
             </ListView.View>
         </ListView>

@@ -47,14 +47,14 @@ namespace TwitchURLGrabber
             {
                 URLListView.Dispatcher.Invoke(new Action(() =>
                 {
-                    if (Urls.Any(u => u.URL == url))
-                    {
-                        Urls.Single(u => u.URL == url).TotalCount++;
-                    }
-                    else
+                    if (!Urls.Any(u => u.URL == url))
                     {
                         Urls.Add(new URLListItem(DateTime.Now, url));
                     }
+
+                    var item = Urls.Single(u => u.URL == url);
+                    item.TotalCount++;
+                    item.SentBy.Add(args.User);
                 }));
             }
 

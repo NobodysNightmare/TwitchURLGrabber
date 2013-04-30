@@ -13,14 +13,13 @@ namespace TwitchURLGrabber
 
         public int TotalCount { get; set; }
 
-        public int UniqueCount { get; set; }
+        public HashSet<string> SentBy { get; private set; }
 
         public URLListItem(DateTime firstSeen, string url)
         {
             FirstOccurence = firstSeen;
             URL = url;
-            TotalCount = 1;
-            UniqueCount = 1;
+            SentBy = new HashSet<string>();
         }
     }
 }
