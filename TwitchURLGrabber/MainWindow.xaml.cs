@@ -25,15 +25,15 @@ namespace TwitchURLGrabber
         private int DisconnectCount;
         private int MessageCount;
 
-        private ObservableCollection<URLListItem> Urls;
+        private ObservableCollection<URLListItem> Urls = new ObservableCollection<URLListItem>();
+        private ObservableCollection<string> Messages = new ObservableCollection<string>();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            Urls = new ObservableCollection<URLListItem>();
-
             URLListView.ItemsSource = Urls;
+            MessageList.ItemsSource = Messages;
 
             IRCClient = new LightTIRCClient(Settings.Default.Channel, Settings.Default.User, Settings.Default.Password);
             IRCClient.Message += IRCClient_Message;
@@ -49,7 +49,7 @@ namespace TwitchURLGrabber
                 {
                     if (!Urls.Any(u => u.URL == url))
                     {
-                        Urls.Add(new URLListItem(DateTime.Now, url));
+                        Urls.Insert(0, new URLListItem(DateTime.Now, url));
                     }
 
                     var item = Urls.Single(u => u.URL == url);
@@ -62,13 +62,22 @@ namespace TwitchURLGrabber
             {
                 MessageCountText.Text = string.Format("Messages: {0:n0}", ++MessageCount);
             }));
+
+            MessageList.Dispatcher.Invoke(new Action(() =>
+            {
+                Messages.Add(string.Format("{0}: {1}", args.User, args.Message));
+                if (Messages.Count > 10)
+                {
+                    Messages.RemoveAt(0);
+                }
+            }));
         }
 
         void IRCClient_Connected(object sender, EventArgs e)
         {
             StatusText.Dispatcher.Invoke(new Action(() =>
             {
-                StatusText.Text = "Connected";
+                StatusText.Text = string.Format("Connected since {0}", DateTime.Now.ToShortTimeString());
             }));
         }
 
@@ -105,6 +114,7 @@ namespace TwitchURLGrabber
         {
             var link = sender as Hyperlink;
             OpenBrowser(link);
+            URLListView.SelectedItem = Urls.Single(u => u.URL == link.NavigateUri.ToString());
         }
 
         private static void OpenBrowser(Hyperlink link)
