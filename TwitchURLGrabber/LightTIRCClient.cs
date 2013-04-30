@@ -56,6 +56,7 @@ namespace TwitchURLGrabber
                     using (var reader = new StreamReader(stream))
                     using (var writer = new StreamWriter(stream))
                     {
+                        stream.ReadTimeout = 360000; //worst-case read-timeout; Twitch-pings occur every 5 minutes
                         writer.WriteLine("PASS {0}", Password);
                         writer.WriteLine("NICK {0}", Username);
                         writer.Flush();
