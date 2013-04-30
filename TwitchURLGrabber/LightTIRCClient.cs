@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace TwitchURLGrabber
 {
-    class LightTIRCClient : IDisposable
+    class LightTIRCClient
     {
         public event EventHandler Connected;
         public event EventHandler Disconnected;
@@ -39,6 +39,8 @@ namespace TwitchURLGrabber
         public void Connect()
         {
             ReceiveThread = new Thread(ReceiveLoop);
+            ReceiveThread.IsBackground = true;
+            ReceiveThread.Name = "IRC Message-Receiver";
             ReceiveThread.Start();
         }
 
@@ -141,12 +143,6 @@ namespace TwitchURLGrabber
             {
                 handler(this, new EventArgs());
             }
-        }
-
-        public void Dispose()
-        {
-            KeepRunning = false;
-            ReceiveThread.Abort();
         }
     }
 }

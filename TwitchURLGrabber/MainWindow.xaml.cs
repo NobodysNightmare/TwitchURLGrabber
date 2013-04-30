@@ -114,10 +114,5 @@ namespace TwitchURLGrabber
             proc.StartInfo.FileName = link.NavigateUri.ToString();
             proc.Start();
         }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            IRCClient.Dispose();
-        }
     }
 }
