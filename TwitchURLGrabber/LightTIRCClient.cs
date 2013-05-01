@@ -76,7 +76,10 @@ namespace TwitchURLGrabber
                                         writer.Flush();
                                         break;
                                     case "PRIVMSG":
-                                        OnMessage(BuildUsername(parts), BuildMessage(parts));
+                                        if (IsMyChannel(parts))
+                                        {
+                                            OnMessage(BuildUsername(parts), BuildMessage(parts));
+                                        }
                                         break;
                                 }
                             }
@@ -101,6 +104,11 @@ namespace TwitchURLGrabber
                     return;
                 }
             }
+        }
+
+        private bool IsMyChannel(string[] parts)
+        {
+            return parts[2] == string.Format("#{0}", Channel);
         }
 
         private static string BuildUsername(string[] parts)
