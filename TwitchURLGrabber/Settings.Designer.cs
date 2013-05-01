@@ -58,5 +58,17 @@ namespace TwitchURLGrabber {
                 this["Password"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int MessageBufferSize {
+            get {
+                return ((int)(this["MessageBufferSize"]));
+            }
+            set {
+                this["MessageBufferSize"] = value;
+            }
+        }
     }
 }
