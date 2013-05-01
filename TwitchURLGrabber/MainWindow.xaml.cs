@@ -54,7 +54,7 @@ namespace TwitchURLGrabber
 
                     var item = Urls.Single(u => u.URL == url);
                     item.TotalCount++;
-                    item.SentBy.Add(args.User);
+                    item.AddSender(args.User);
                 }));
             }
 

@@ -8,6 +8,8 @@ namespace TwitchURLGrabber
 {
     class URLListItem : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public DateTime FirstOccurence { get; private set; }
 
         public string URL { get; private set; }
@@ -23,7 +25,12 @@ namespace TwitchURLGrabber
             }
         }
 
-        public HashSet<string> SentBy { get; private set; }
+        public int SentByCount
+        {
+            get { return SentBy.Count; }
+        }
+
+        private HashSet<string> SentBy;
 
         public URLListItem(DateTime firstSeen, string url)
         {
@@ -32,7 +39,11 @@ namespace TwitchURLGrabber
             SentBy = new HashSet<string>();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public void AddSender(string username)
+        {
+            SentBy.Add(username);
+            OnPropertyChanged("SentByCount");
+        }
 
         private void OnPropertyChanged(string propertyName)
         {
