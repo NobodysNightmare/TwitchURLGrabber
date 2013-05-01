@@ -21,6 +21,8 @@ namespace TwitchURLGrabber
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const int MessageBufferSize = 100;
+
         private LightTIRCClient IRCClient;
         private int DisconnectCount;
         private int MessageCount;
@@ -66,7 +68,7 @@ namespace TwitchURLGrabber
             MessageList.Dispatcher.Invoke(new Action(() =>
             {
                 Messages.Add(string.Format("{0}: {1}", args.User, args.Message));
-                if (Messages.Count > 10)
+                if (Messages.Count > MessageBufferSize)
                 {
                     Messages.RemoveAt(0);
                 }
