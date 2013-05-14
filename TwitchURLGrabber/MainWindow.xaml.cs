@@ -22,7 +22,6 @@ namespace TwitchURLGrabber
     public partial class MainWindow : Window
     {
         private LightTIRCClient IRCClient;
-        private int DisconnectCount;
         private int MessageCount;
 
         private ObservableCollection<URLListItem> Urls = new ObservableCollection<URLListItem>();
@@ -78,6 +77,7 @@ namespace TwitchURLGrabber
             StatusText.Dispatcher.Invoke(new Action(() =>
             {
                 StatusText.Text = string.Format("Connected since {0}", DateTime.Now.ToShortTimeString());
+                ChannelNameText.Text = string.Format("#{0}", Settings.Default.Channel);
             }));
         }
 
@@ -86,11 +86,7 @@ namespace TwitchURLGrabber
             StatusText.Dispatcher.Invoke(new Action(() =>
             {
                 StatusText.Text = string.Format("Disconnected. Trying to reconnect...");
-            }));
-
-            DisconnectCountText.Dispatcher.Invoke(new Action(() =>
-            {
-                DisconnectCountText.Text = string.Format("Disconnects: {0:n0}", ++DisconnectCount);
+                ChannelNameText.Text = "---";
             }));
         }
 

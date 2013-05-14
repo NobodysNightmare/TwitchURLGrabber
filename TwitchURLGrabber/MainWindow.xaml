@@ -41,7 +41,7 @@
                     <ColumnDefinition Width="130*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="StatusText" HorizontalAlignment="Left" Margin="10,0,0,10" TextWrapping="Wrap" Height="16" VerticalAlignment="Bottom" Text="Waiting for initial connection..."/>
-                <TextBlock Grid.Column="1" x:Name="DisconnectCountText" Margin="35,0,31,10" TextWrapping="Wrap" Text="Disconnects: 0" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="1" x:Name="ChannelNameText" Margin="35,0,31,10" TextWrapping="Wrap" Text="---" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
                 <TextBlock Grid.Column="2" x:Name="MessageCountText" Margin="0,0,9,10" TextWrapping="Wrap" Text="Messages: 0" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
             </Grid>
         </Grid>
