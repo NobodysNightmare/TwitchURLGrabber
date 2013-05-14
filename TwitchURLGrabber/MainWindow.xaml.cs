@@ -98,7 +98,7 @@ namespace TwitchURLGrabber
         {
             foreach (var word in message.Split(' '))
             {
-                if (word.StartsWith("http://"))
+                if (word.StartsWith("http://") || word.StartsWith("https://"))
                 {
                     yield return word;
                 }
