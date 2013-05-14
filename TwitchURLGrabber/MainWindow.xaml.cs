@@ -44,7 +44,7 @@ namespace TwitchURLGrabber
         {
             foreach (string url in ParseUrlsFromMessage(args.Message).Distinct())
             {
-                URLListView.Dispatcher.Invoke(new Action(() =>
+                Dispatcher.Invoke(new Action(() =>
                 {
                     if (!Urls.Any(u => u.URL == url))
                     {
@@ -57,13 +57,10 @@ namespace TwitchURLGrabber
                 }));
             }
 
-            MessageCountText.Dispatcher.Invoke(new Action(() =>
+            Dispatcher.Invoke(new Action(() =>
             {
                 MessageCountText.Text = string.Format("Messages: {0:n0}", ++MessageCount);
-            }));
 
-            MessageList.Dispatcher.Invoke(new Action(() =>
-            {
                 Messages.Add(string.Format("{0}: {1}", args.User, args.Message));
                 if (Messages.Count > Settings.Default.MessageBufferSize)
                 {
@@ -74,7 +71,7 @@ namespace TwitchURLGrabber
 
         void IRCClient_Connected(object sender, EventArgs e)
         {
-            StatusText.Dispatcher.Invoke(new Action(() =>
+            Dispatcher.Invoke(new Action(() =>
             {
                 StatusText.Text = string.Format("Connected since {0}", DateTime.Now.ToShortTimeString());
                 ChannelNameText.Text = string.Format("#{0}", Settings.Default.Channel);
@@ -83,7 +80,7 @@ namespace TwitchURLGrabber
 
         void IRCClient_Disconnected(object sender, EventArgs e)
         {
-            StatusText.Dispatcher.Invoke(new Action(() =>
+            Dispatcher.Invoke(new Action(() =>
             {
                 StatusText.Text = string.Format("Disconnected. Trying to reconnect...");
                 ChannelNameText.Text = "---";
