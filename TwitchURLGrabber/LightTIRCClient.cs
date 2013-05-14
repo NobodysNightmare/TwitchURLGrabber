@@ -11,8 +11,11 @@ namespace TwitchURLGrabber
 {
     class LightTIRCClient
     {
-        public event EventHandler Connected;
-        public event EventHandler Disconnected;
+        public event ConnectedEventHandler Connected;
+        public delegate void ConnectedEventHandler(object source, EventArgs args);
+
+        public event DisconnectedEventHandler Disconnected;
+        public delegate void DisconnectedEventHandler(object source, DisconnectedEventArgs args);
 
         public event MessageEventHandler Message;
         public delegate void MessageEventHandler(object source, MessageEventArgs args);
@@ -65,43 +68,56 @@ namespace TwitchURLGrabber
                             var line = reader.ReadLine();
                             Console.WriteLine(line);
 
-                            var parts = line.Split(' ');
-                            if (line.StartsWith(":") && parts.Count() >= 3)
+                            if (line != null)
                             {
-                                switch (parts[1])
-                                {
-                                    case "001":
-                                        OnConnected();
-                                        writer.WriteLine("JOIN #{0}", Channel);
-                                        writer.Flush();
-                                        break;
-                                    case "PRIVMSG":
-                                        if (IsMyChannel(parts))
-                                        {
-                                            OnMessage(BuildUsername(parts), BuildMessage(parts));
-                                        }
-                                        break;
-                                }
+                                ProcessIRCCommand(writer, line);
                             }
                             else
                             {
-                                if (parts.First() == "PING")
-                                {
-                                    writer.WriteLine("PONG {0}", parts.Last());
-                                    writer.Flush();
-                                }
+                                OnDisconnected(true);
+                                return;
                             }
                         }
                     }
                 }
                 catch (IOException)
                 {
-                    OnDisconnected();
+                    OnDisconnected(false);
                     Thread.Sleep(2000);
                 }
                 catch (ThreadAbortException)
                 {
                     return;
+                }
+            }
+        }
+
+        private void ProcessIRCCommand(StreamWriter writer, string line)
+        {
+            var parts = line.Split(' ');
+            if (line.StartsWith(":") && parts.Count() >= 3)
+            {
+                switch (parts[1])
+                {
+                    case "001":
+                        OnConnected();
+                        writer.WriteLine("JOIN #{0}", Channel);
+                        writer.Flush();
+                        break;
+                    case "PRIVMSG":
+                        if (IsMyChannel(parts))
+                        {
+                            OnMessage(BuildUsername(parts), BuildMessage(parts));
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                if (parts.First() == "PING")
+                {
+                    writer.WriteLine("PONG {0}", parts.Last());
+                    writer.Flush();
                 }
             }
         }
@@ -145,12 +161,12 @@ namespace TwitchURLGrabber
             }
         }
 
-        protected void OnDisconnected()
+        protected void OnDisconnected(bool isFinal)
         {
             var handler = Disconnected;
             if (handler != null)
             {
-                handler(this, new EventArgs());
+                handler(this, new DisconnectedEventArgs(isFinal));
             }
         }
     }

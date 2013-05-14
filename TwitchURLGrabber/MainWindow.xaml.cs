@@ -78,11 +78,11 @@ namespace TwitchURLGrabber
             }));
         }
 
-        void IRCClient_Disconnected(object sender, EventArgs e)
+        void IRCClient_Disconnected(object sender, DisconnectedEventArgs args)
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                StatusText.Text = string.Format("Disconnected. Trying to reconnect...");
+                StatusText.Text = string.Format("Disconnected. {0}", args.IsFinal ? "" : "Trying to reconnect...");
                 ChannelNameText.Text = "---";
             }));
         }
